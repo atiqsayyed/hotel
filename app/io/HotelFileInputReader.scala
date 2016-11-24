@@ -6,7 +6,7 @@ import play.Play
 import scala.io.Source
 import java.io.File
 
-class HotelFileReader(filePath: String) extends HotelReader {
+class HotelFileInputReader(filePath: String) extends HotelInputReader {
   def read() = {
     val hotelCsv = Source.fromFile(filePath).getLines().toList.tail
     hotelCsv.map(csvRecord => {

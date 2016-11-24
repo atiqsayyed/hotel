@@ -12,7 +12,7 @@ class HotelController (hotelService: HotelService) extends Controller{
       val city = request.getQueryString("city").getOrElse("Amsterdam")
       val order = request.getQueryString("order").getOrElse(Order.ASC)
       val key = request.getQueryString("key").getOrElse("")
-      val hotels = hotelService.getHotelsByCity(city)
+      val hotels = hotelService.getHotelsByCity(city,order)
 
       Ok(views.html.search(hotels))
   }

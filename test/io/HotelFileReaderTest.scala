@@ -14,7 +14,7 @@ class HotelFileReaderTest extends FunSpec with Matchers{
     it("should read File and return hotels"){
       Helpers.running(FakeApplication()) {
         val filePath = play.api.Environment.simple().classLoader.getResource("test.csv").getPath
-        val reader = new HotelFileReader(filePath)
+        val reader = new HotelFileInputReader(filePath)
         val hotels = reader.read()
 
         hotels.size should be(4)

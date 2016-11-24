@@ -2,6 +2,6 @@ package io
 
 import model.Hotel
 
-trait HotelReader {
+trait HotelInputReader {
   def read:List[Hotel]
 }

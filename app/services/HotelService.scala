@@ -1,10 +1,16 @@
 package services
+import io.HotelInputReader
+import model.Order
 
-import model.Hotel
+class HotelService(hotelInputReader: HotelInputReader) {
+  lazy val hotels = hotelInputReader.read
 
-class HotelService (hotels: List[Hotel]) {
-  def getHotelsByCity(city:String) = {
-    hotels.filter(_.city == city)
+  def getHotelsByCity(city:String, order: String) = {
+    val filteredHotels = hotels.filter(_.city == city)
+    if(order == Order.ASC){
+      filteredHotels.sortBy(_.price)
+    }else{
+      filteredHotels.sortBy(-_.price)
+    }
   }
-//  lazy val hotels = reader.read()
 }
