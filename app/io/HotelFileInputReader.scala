@@ -1,10 +1,8 @@
 package io
 
 import model.Hotel
-import play.Play
 
 import scala.io.Source
-import java.io.File
 
 class HotelFileInputReader(filePath: String) extends HotelInputReader {
   def read() = {

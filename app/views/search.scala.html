@@ -12,7 +12,7 @@
     </head>
     <body>
         <h1>Hotels</h1>
-        <input type="text" id="cityName" placeholder="City Name"></input>
+        <input type="text" id="cityName" placeholder="City Name" value="Bangkok"></input>
         <button onclick="search()">Search</button>
 
         <table border="1">
@@ -28,7 +28,7 @@
     function search() {
         var input = document.getElementById("cityName")
         var searchTerm = input.value
-        window.location.href = "/search?city="+searchTerm
+        window.location.href = "/search?city="+searchTerm+"&key=agoda"
     }
     </script>
 </html>

@@ -3,9 +3,8 @@ package io
 import model.Hotel
 import org.scalatest.{FunSpec, Matchers}
 import play.api.Play
-import play.api.test.{FakeApplication, Helpers}
-import java.io.File
 import play.api.Play.current
+import play.api.test.{FakeApplication, Helpers}
 
 class HotelFileReaderTest extends FunSpec with Matchers{
 
@@ -13,7 +12,7 @@ class HotelFileReaderTest extends FunSpec with Matchers{
 
     it("should read File and return hotels"){
       Helpers.running(FakeApplication()) {
-        val filePath = play.api.Environment.simple().classLoader.getResource("test.csv").getPath
+        val filePath = Play.application.classloader.getResource("test.csv").getPath
         val reader = new HotelFileInputReader(filePath)
         val hotels = reader.read()
 

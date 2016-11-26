@@ -3,8 +3,8 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /search                           controllers.HotelControllerInstance.getHotels
-GET     /                                 controllers.HotelControllerInstance.index
+GET     /search                           controllers.HotelController.getHotels
+GET     /                                 controllers.HotelController.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
