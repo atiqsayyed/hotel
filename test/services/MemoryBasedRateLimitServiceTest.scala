@@ -5,13 +5,13 @@ import java.util.Date
 import model.Rate
 import org.scalatest.{Matchers, FunSpec}
 
-class InMemoryRateLimitServiceTest extends FunSpec with Matchers{
+class MemoryBasedRateLimitServiceTest extends FunSpec with Matchers{
 
   describe("In Memory Rate Limit Service Test"){
     val ONE_MINUTE_IN_MILLIS = 60000L
     val globalRate = Rate(1,10)
     val rateMap = Map("agoda" -> Rate(5,10))
-    val inMemoryLimitService = new InMemoryRateLimitService(globalRate, rateMap,5 * ONE_MINUTE_IN_MILLIS)
+    val inMemoryLimitService = new MemoryBasedRateLimitService(globalRate, rateMap,5 * ONE_MINUTE_IN_MILLIS)
     val currentTime = new Date().getTime
 
     it("should return true for first five request"){

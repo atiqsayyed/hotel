@@ -5,10 +5,10 @@ import java.util.Date
 import config.DependenciesInstance._
 import model.Order
 import play.api.mvc.{Action, Controller}
-import services.{HotelService, InMemoryRateLimitService}
+import services.{HotelService, MemoryBasedRateLimitService}
 
 
-class HotelController(hotelService: HotelService, inMemoryRateLimitService: InMemoryRateLimitService) extends Controller {
+class HotelController(hotelService: HotelService, memoryBasedLimitService: MemoryBasedRateLimitService) extends Controller {
 
   def getHotels() = Action {
     request =>
@@ -19,7 +19,7 @@ class HotelController(hotelService: HotelService, inMemoryRateLimitService: InMe
       (cityOpt, keyOpt) match {
         case (Some(city), Some(key)) => {
           val currentTime = new Date().getTime
-          if (inMemoryRateLimitService.validate(key, currentTime)) {
+          if (memoryBasedLimitService.validate(key, currentTime)) {
             val hotels = hotelService.getHotelsByCity(city, order)
             Ok(views.html.search(hotels))
           } else {

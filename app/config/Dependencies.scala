@@ -3,7 +3,7 @@ package config
 import io.HotelFileInputReader
 import model.Rate
 import play.api.Play
-import services.{HotelService, InMemoryRateLimitService}
+import services.{HotelService, MemoryBasedRateLimitService}
 import play.api.Play.current
 
 class Dependencies {
@@ -13,7 +13,7 @@ class Dependencies {
   lazy val hotelService = new HotelService(hotelReader)
   val globalRate = Rate(Properties.maxGlobalAllowedMessage, Properties.perSecondsGlobal)
   val rateMap = Map(Properties.apiKey -> Rate(Properties.maxAllowedMessage,Properties.perSeconds))
-  lazy val inMemoryRateLimitService = new InMemoryRateLimitService(globalRate, rateMap, Properties.suspensionTimeInMinutes * ONE_MINUTE_IN_MILLIS)
+  lazy val inMemoryRateLimitService = new MemoryBasedRateLimitService(globalRate, rateMap, Properties.suspensionTimeInMinutes * ONE_MINUTE_IN_MILLIS)
 }
 
 object DependenciesInstance extends Dependencies

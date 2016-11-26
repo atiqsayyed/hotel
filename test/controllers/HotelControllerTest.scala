@@ -6,7 +6,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.mock.MockitoSugar
 import play.api.test.FakeRequest
 import org.mockito.Mockito._
-import services.{InMemoryRateLimitService, HotelService}
+import services.{MemoryBasedRateLimitService, HotelService}
 
 class HotelControllerTest extends FunSpec with MockitoSugar with ScalaFutures with Matchers{
 
@@ -43,7 +43,7 @@ class HotelControllerTest extends FunSpec with MockitoSugar with ScalaFutures wi
 
   trait SetUp {
     val hotelServiceMock = mock[HotelService]
-    val inMemoryLimitServiceMock = mock[InMemoryRateLimitService]
+    val inMemoryLimitServiceMock = mock[MemoryBasedRateLimitService]
     val controller = new HotelController(hotelServiceMock,inMemoryLimitServiceMock)
 
     when(inMemoryLimitServiceMock.validate(org.mockito.Matchers.eq("agoda"),org.mockito.Matchers.any[Long])).thenReturn(true)
