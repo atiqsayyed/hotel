@@ -1,7 +1,9 @@
 package core
 
+case class RateLimitRequestStatus(isValid:Boolean,lastRequestAtInSeconds:Long, currentAllowedMessages:Double)
+
 trait RateLimit {
-  def processRequest(nowSeconds: Long): Boolean
-  def getBlockedTill: Long
-  def setBlockedTill(blockedTill: Long)
+  def processRequest(nowSeconds: Long): RateLimitRequestStatus
+  def blockedTill: Long
+  def rateLimitStatus:RateLimitRequestStatus
 }

@@ -2,33 +2,26 @@ package core
 
 import model.Rate
 
-class TokenBasedRateLimit(rate:Rate) extends RateLimit{
-  private var lastRequestAtInSeconds = 0L
-  private var requestBlockedTill = 0L
-  private var currentAllowedMessages = 0.0
 
-  override def processRequest(nowSeconds: Long): Boolean = {
-    val time_passed: Long = nowSeconds - lastRequestAtInSeconds
-    lastRequestAtInSeconds = nowSeconds
-    updateAllowedMessages(time_passed)
-    if (currentAllowedMessages > rate.maxMessagesAllowed) {
-      currentAllowedMessages = rate.maxMessagesAllowed
-    }
-    if (currentAllowedMessages < 1.0) {
-      false
-    }else{
-      currentAllowedMessages -= 1.0
-      true
+case class TokenBasedRateLimit(rate: Rate, blockedTill: Long, rateLimitStatus: RateLimitRequestStatus) extends RateLimit {
+
+  override def processRequest(nowSeconds: Long): RateLimitRequestStatus = {
+    val time_passed = nowSeconds - rateLimitStatus.lastRequestAtInSeconds
+    val updatedCurrentAllowedMessage = updateAllowedMessages(time_passed)
+
+    if (updatedCurrentAllowedMessage <= 1.0) {
+      RateLimitRequestStatus(false, nowSeconds, updatedCurrentAllowedMessage)
+    } else {
+      RateLimitRequestStatus(true, nowSeconds, updatedCurrentAllowedMessage - 1.0)
     }
   }
 
-  def updateAllowedMessages(time_passed: Long): Unit = {
-    currentAllowedMessages += time_passed * (rate.maxMessagesAllowed / rate.perSeconds)
+  private def updateAllowedMessages(time_passed: Long): Double = {
+    val currentAllowedMessages = rateLimitStatus.currentAllowedMessages + time_passed * (rate.maxMessagesAllowed / rate.perSeconds)
+    if (rateLimitStatus.currentAllowedMessages > rate.maxMessagesAllowed) {
+      rate.maxMessagesAllowed
+    } else {
+      currentAllowedMessages
+    }
   }
-
-  override def setBlockedTill(blockedUntill: Long): Unit = {
-    requestBlockedTill = blockedUntill
-  }
-
-  override def getBlockedTill: Long = requestBlockedTill
 }
