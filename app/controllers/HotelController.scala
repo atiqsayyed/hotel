@@ -12,16 +12,25 @@ class HotelController(hotelService: HotelService, inMemoryRateLimitService: InMe
 
   def getHotels() = Action {
     request =>
-      val city = request.getQueryString("city").getOrElse("Amsterdam")
+      val cityOpt = request.getQueryString("city")
+      val keyOpt = request.getQueryString("key")
       val order = request.getQueryString("order").getOrElse(Order.ASC)
-      val key = request.getQueryString("key").getOrElse("")
-      val currentTime = new Date().getTime
-      if (inMemoryRateLimitService.validate(key, currentTime)) {
-        val hotels = hotelService.getHotelsByCity(city, order)
-        Ok(views.html.search(hotels))
-      } else {
-        TooManyRequest("You have exceeded maximum allowed usage. Please try after 5 minutes")
+
+      (cityOpt, keyOpt) match {
+        case (Some(city), Some(key)) => {
+          val currentTime = new Date().getTime
+          if (inMemoryRateLimitService.validate(key, currentTime)) {
+            val hotels = hotelService.getHotelsByCity(city, order)
+            Ok(views.html.search(hotels))
+          } else {
+            TooManyRequest("You have exceeded maximum allowed usage. Please try after 5 minutes")
+          }
+        }
+        case _ => {
+          UnprocessableEntity("Parameters city or key missing!!")
+        }
       }
+
   }
 
   def index() = Action {
