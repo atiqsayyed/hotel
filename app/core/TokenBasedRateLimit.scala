@@ -3,7 +3,7 @@ package core
 import model.Rate
 
 
-case class TokenBasedRateLimit(rate: Rate, blockedTill: Long, rateLimitStatus: RateLimitRequestStatus) extends RateLimit {
+case class TokenBasedRateLimit(rate: Rate, requestBlockedTill: Long, rateLimitStatus: RateLimitRequestStatus) extends RateLimit {
 
   override def processRequest(nowSeconds: Long): RateLimitRequestStatus = {
     val time_passed = nowSeconds - rateLimitStatus.lastRequestAtInSeconds

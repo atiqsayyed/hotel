@@ -4,6 +4,6 @@ case class RateLimitRequestStatus(isValid:Boolean,lastRequestAtInSeconds:Long, c
 
 trait RateLimit {
   def processRequest(nowSeconds: Long): RateLimitRequestStatus
-  def blockedTill: Long
+  def requestBlockedTill: Long
   def rateLimitStatus:RateLimitRequestStatus
 }

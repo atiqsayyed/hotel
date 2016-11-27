@@ -27,7 +27,7 @@ class HotelController(hotelService: HotelService, memoryBasedLimitService: Memor
           }
         }
         case _ => {
-          UnprocessableEntity("Parameters city or key missing!!")
+          UnprocessableEntity("Request Parameters 'city' or 'key' missing!!")
         }
       }
 
